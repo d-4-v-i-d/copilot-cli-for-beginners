@@ -51,3 +51,54 @@ def test_remove_book_invalid():
     collection = BookCollection()
     result = collection.remove_book("Nonexistent Book")
     assert result is False
+
+
+def test_search_by_partial_title():
+    collection = BookCollection()
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+    collection.add_book("1984", "George Orwell", 1949)
+    results = collection.search_books("Hobbit")
+    assert len(results) == 1
+    assert results[0].title == "The Hobbit"
+
+
+def test_search_by_partial_author():
+    collection = BookCollection()
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+    collection.add_book("1984", "George Orwell", 1949)
+    results = collection.search_books("Tolkien")
+    assert len(results) == 1
+    assert results[0].author == "J.R.R. Tolkien"
+
+
+def test_search_case_insensitive():
+    collection = BookCollection()
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    results = collection.search_books("dune")
+    assert len(results) == 1
+    results = collection.search_books("FRANK")
+    assert len(results) == 1
+
+
+def test_search_returns_multiple_matches():
+    collection = BookCollection()
+    collection.add_book("The Hobbit", "J.R.R. Tolkien", 1937)
+    collection.add_book("The Lord of the Rings", "J.R.R. Tolkien", 1954)
+    collection.add_book("1984", "George Orwell", 1949)
+    results = collection.search_books("The")
+    assert len(results) == 2
+
+
+def test_search_no_matches():
+    collection = BookCollection()
+    collection.add_book("1984", "George Orwell", 1949)
+    results = collection.search_books("Tolkien")
+    assert results == []
+
+
+def test_search_empty_query_returns_all():
+    collection = BookCollection()
+    collection.add_book("1984", "George Orwell", 1949)
+    collection.add_book("Dune", "Frank Herbert", 1965)
+    results = collection.search_books("")
+    assert len(results) == 2

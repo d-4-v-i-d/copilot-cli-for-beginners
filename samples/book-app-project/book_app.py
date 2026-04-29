@@ -64,13 +64,13 @@ def handle_remove() -> None:
 
 
 def handle_find() -> None:
-    print("\nFind Books by Author\n")
+    print("\nFind Books by Title or Author\n")
 
-    author = input("Author name: ").strip()
-    if not author:
-        print("Error: Author name cannot be empty.\n")
+    query = input("Search (title or author): ").strip()
+    if not query:
+        print("Error: Search query cannot be empty.\n")
         return
-    books = collection.find_by_author(author)
+    books = collection.search_books(query)
 
     show_books(books)
 
@@ -96,7 +96,7 @@ Commands:
   list     - Show all books
   add      - Add a new book
   remove   - Remove a book by title
-  find     - Find books by author
+  find     - Find books by title or author
   read     - Mark a book as read
   help     - Show this help message
 """)
